@@ -1,6 +1,6 @@
 # OpenAI Proxy Server
 
-A lightweight ASP.NET Core Web API designed to securely handle and forward requests to the OpenAI API. Acts as a proxy between your front-end application (e.g., an Elden Ring overlay or chatbot interface) and OpenAI, keeping your API key hidden from the client side.
+A lightweight ASP.NET Core Web API designed to securely handle and forward requests to the OpenAI API. Acts as a proxy between your front-end application and OpenAI, keeping your API key hidden from the client side.
 
 ---
 
