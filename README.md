@@ -65,14 +65,11 @@ Embedding your OpenAI API key in a client-side application (like a game overlay)
 
 ### POST `/api/response`
 
-**Request Body** (JSON Example)
-```json
-{
-  "messages": [
-    { "role": "system", "content": "You are a helpful assistant." },
-    { "role": "user",   "content": "Say something inspiring." }
-  ]
-}
+**Request Body**
+```cmd
+curl -X POST https://localhost:7009/api/response ^
+     -H "Content-Type: application/x-www-form-urlencoded" ^
+     --data "Body=Hello AI!"
 ```
 
 **Response**  
