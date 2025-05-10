@@ -90,7 +90,7 @@ This application can be deployed to any .NET-compatible hosting environment:
 
 ## Configuration & Environment
 
-You can adjust settings in `appsettings.json`, including timeouts, logging levels, and CORS policy.  
+You can adjust settings in `appsettings.json`, including rate limits, logging levels, and CORS policy.  
 To override in production, use environment variables with the same key structure (e.g., `OpenAI__APIKey`).
 
 ---
