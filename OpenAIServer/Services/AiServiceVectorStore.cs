@@ -28,7 +28,7 @@ namespace OpenAI.Examples
             AssistantClient assistantClient = openAIClient.GetAssistantClient();
             var vectorStoreClient = openAIClient.GetVectorStoreClient();
 
-            var assistantId = "";
+            var assistantId = "asst_a3nc4C3fUnmfyIDkNNd4enHB";
 
             // Create a thread with the student's and chat bot's past 5 message and wait for the response.
             Console.WriteLine($"[DEBUG] Creating thread with student's message: {stats}");
