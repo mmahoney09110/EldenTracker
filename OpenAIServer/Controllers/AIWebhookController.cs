@@ -21,7 +21,6 @@ namespace MaidenServer.Controllers
         [HttpPost("response")]
         public async Task<IActionResult> IncomingRequest([FromForm] string Body)
         {
-            var interactionStartTime = DateTime.UtcNow;
             _logger.LogInformation("Incoming request received with Body: {Body}", Body);
 
             try
