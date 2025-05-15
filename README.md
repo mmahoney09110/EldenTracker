@@ -21,7 +21,7 @@ Embedding your OpenAI API key in a client-side application (like a game overlay)
 
 ## Requirements
 
-- [.NET 6 SDK](https://dotnet.microsoft.com/download) or later  
+- [.NET 9 SDK](https://dotnet.microsoft.com/download) or later  
 - An OpenAI API key  
 - An OpenAI assistant created at https://platform.openai.com/assistants/
 
@@ -104,4 +104,4 @@ This project is licensed under the [MIT License](LICENSE).
 ## Acknowledgments
 
 - Built for the Elden Ring AI Companion Project  
-- Powered by .NET 6 and OpenAI  
+- Powered by .NET 9 and OpenAI  
