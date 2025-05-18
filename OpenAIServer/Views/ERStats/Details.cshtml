@@ -1,0 +1,88 @@
+﻿@model OpenAIServer.Entities.ERStats
+
+@{
+    ViewData["Title"] = "Character Details";
+}
+
+<div class="container my-5">
+
+    <!-- Page Header -->
+    <div class="text-center mb-5">
+        <h1 class="display-4">@Model.Name's Journey</h1>
+        <p class="lead text-muted">Live stats pulled from the Elden Encouragement Mod</p>
+        <hr />
+    </div>
+
+    <!-- Stats Card -->
+    <div class="card shadow-lg">
+        <div class="card-header bg-dark text-white fw-bold">
+            Character Overview
+        </div>
+        <div class="card-body">
+            <dl class="row">
+
+                <dt class="col-sm-3">Name</dt>
+                <dd class="col-sm-9">@Model.Name</dd>
+
+                <dt class="col-sm-3">Class</dt>
+                <dd class="col-sm-9">@Model.Class</dd>
+
+                <dt class="col-sm-3">Gender</dt>
+                <dd class="col-sm-9">@Model.Gender</dd>
+
+                <dt class="col-sm-3">Level</dt>
+                <dd class="col-sm-9">@Model.Level</dd>
+
+                <dt class="col-sm-3">Health</dt>
+                <dd class="col-sm-9">@Model.HP / @Model.MaxHP</dd>
+
+                <dt class="col-sm-3">Great Rune Active</dt>
+                @if (Model.GreatRune == null)
+                {
+                    <dd class="col-sm-9">No</dd>
+                }
+                else if (Model.GreatRune == 1)
+                {
+                    <dd class="col-sm-9">Yes</dd>
+                }
+                else
+                {
+                    <dd class="col-sm-9">No</dd>
+                }
+
+                <dt class="col-sm-3">Runes Held</dt>
+                <dd class="col-sm-9">@Model.Runes</dd>
+
+                <dt class="col-sm-3">Total Deaths</dt>
+                <dd class="col-sm-9">@Model.Deaths</dd>
+
+                <dt class="col-sm-3">Current Location</dt>
+                <dd class="col-sm-9">@Model.Location</dd>
+
+                <dt class="col-sm-3">Primary Weapon</dt>
+                <dd class="col-sm-9">@Model.PrimaryWeapon</dd>
+
+                <dt class="col-sm-3">Secondary Weapon</dt>
+                <dd class="col-sm-9">@Model.SecondaryWeapon</dd>
+
+                <dt class="col-sm-3">Tertiary Weapon</dt>
+                <dd class="col-sm-9">@Model.TertiaryWeapon</dd>
+
+                <dt class="col-sm-3">Times Encouraged</dt>
+                <dd class="col-sm-9">@Model.ResposneCount</dd>
+
+                <dt class="col-sm-3">Created On</dt>
+                <dd class="col-sm-9">@Model.CreatedAt</dd>
+
+                <dt class="col-sm-3">Last Updated</dt>
+                <dd class="col-sm-9">@Model.UpdatedAt</dd>
+
+            </dl>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <div class="mt-4">
+        <a asp-action="Index" class="btn btn-secondary me-2">← Back to List</a>
+    </div>
+</div>

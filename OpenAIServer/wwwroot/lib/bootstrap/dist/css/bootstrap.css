@@ -3834,7 +3834,7 @@ textarea.form-control-lg {
   padding: var(--bs-nav-link-padding-y) var(--bs-nav-link-padding-x);
   font-size: var(--bs-nav-link-font-size);
   font-weight: var(--bs-nav-link-font-weight);
-  color: var(--bs-nav-link-color);
+  color: #fff;
   text-decoration: none;
   background: none;
   border: 0;
@@ -3846,7 +3846,7 @@ textarea.form-control-lg {
   }
 }
 .nav-link:hover, .nav-link:focus {
-  color: var(--bs-nav-link-hover-color);
+    color: #ffc107;
 }
 .nav-link:focus-visible {
   outline: 0;
@@ -4000,7 +4000,7 @@ textarea.form-control-lg {
   white-space: nowrap;
 }
 .navbar-brand:hover, .navbar-brand:focus {
-  color: var(--bs-navbar-brand-hover-color);
+  color: #ffc107;
 }
 
 .navbar-nav {

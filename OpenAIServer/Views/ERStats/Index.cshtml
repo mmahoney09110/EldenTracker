@@ -1,0 +1,93 @@
+﻿@model IEnumerable<OpenAIServer.Entities.ERStats>
+@{
+    ViewData["Title"] = "Elden Tracker";
+}
+
+<!-- DataTables + Bootstrap Integration -->
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" />
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+
+<style>
+    .clickable-row {
+        cursor: pointer;
+    }
+
+        .clickable-row:hover {
+            background-color: #f1f1f1;
+        }
+</style>
+
+<div class="container my-5">
+
+    <!-- Hero / Description -->
+    <div class="mb-4 p-4 bg-light rounded shadow-sm">
+        <h1 class="display-5">Elden Tracker</h1>
+        <p class="lead">
+            This site tracks real‑time stats from your Elden Ring Encouragement Mod sessions.
+            You can search by your character’s name to view their latest health, level, location, and more.
+        </p>
+        <ul>
+            <li><strong>Search:</strong> Filter by character name.</li>
+            <li><strong>Click:</strong> Click any row to view full stats.</li>
+            <li><strong>Sort & Paginate:</strong> Use column headers or the page navigator.</li>
+        </ul>
+        <p class="mb-0 text-muted"><em>All data is pushed automatically by the mod—no manual updates needed.</em></p>
+    </div>
+
+    <!-- Stats Table -->
+    <div class="card shadow-sm">
+        <div class="card-body p-0">
+            <table id="erStatsTable" class="table table-striped table-hover table-bordered mb-0" style="width:100%">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Name</th>
+                        <th>Max HP</th>
+                        <th>Level</th>
+                        <th>Current Location</th>
+                        <th>Deaths</th>
+                        <th>Last Updated</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr class="clickable-row" data-href="@Url.Action("Details", new { id = item.Id })">
+                            <td>@item.Name</td>
+                            <td>@item.MaxHP</td>
+                            <td>@item.Level</td>
+                            <td>@item.Location</td>
+                            <td>@item.Deaths</td>
+                            <td>@item.UpdatedAt</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="mt-5 text-center text-muted">
+        <p>
+            Made by Robert Mahoney for the Elden Encouragement Mod.<br />
+            <a href="https://github.com/mmahoney09110" target="_blank">View on GitHub</a> | Contact on Discord: <code>Techbot911</code>
+        </p>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('#erStatsTable').DataTable({
+            responsive: true,
+            lengthMenu: [10, 25, 50, 100],
+            language: {
+                searchPlaceholder: "Search character name..."
+            }
+        });
+
+        // Make rows clickable
+        $('#erStatsTable').on('click', '.clickable-row', function () {
+            window.location = $(this).data('href');
+        });
+    });
+</script>

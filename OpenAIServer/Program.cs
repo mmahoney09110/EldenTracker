@@ -1,5 +1,10 @@
 using AspNetCoreRateLimit;
+using Microsoft.EntityFrameworkCore;
 using OpenAI.Examples;
+using OpenAIServer.Data;
+using System;
+using static OpenAIServer.Data.OpenAIServerContext;
+using Microsoft.Extensions.DependencyInjection;
 
 var _configuration = new ConfigurationBuilder()
     .SetBasePath(AppContext.BaseDirectory)
@@ -7,7 +12,11 @@ var _configuration = new ConfigurationBuilder()
     .Build();
 
 var builder = WebApplication.CreateBuilder(args);
-//builder.Services.AddRazorPages();
+
+builder.Services.AddDbContext<OpenAIServerContext>(options =>
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddControllersWithViews();
 
 // 1) Register your services
 builder.Services.AddControllers();
@@ -30,7 +39,15 @@ var app = builder.Build();
 app.UseHttpsRedirection();
 
 // 3) Routing must come before MapControllers
+app.UseStaticFiles();
 app.UseRouting();
+
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllerRoute(
+        name: "default",
+        pattern: "{controller=ERStats}/{action=Index}/{id?}");
+});
 
 // 4) auth goes here
 //app.UseAuthorization();
@@ -41,8 +58,6 @@ app.MapControllers();
 // 6) (Optional) static pages, razor, etc.
 // Enable IP rate limiting
 app.UseIpRateLimiting();
-//app.MapStaticAssets();
-//app.MapRazorPages().WithStaticAssets();
 
 app.Run();
 
