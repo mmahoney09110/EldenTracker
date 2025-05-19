@@ -50,23 +50,6 @@ namespace MaidenServer.Controllers
         {
             var lines = input.Split('\n', StringSplitOptions.RemoveEmptyEntries);
 
-            //var events = 0;
-            //Check for event
-           // if (lines[0].StartsWith("Event", StringComparison.OrdinalIgnoreCase))
-            //{
-                //string eventMessage = lines[0];
-                //var eventLog = new EventLog
-                //{
-                //    Message = $"Event detected: {eventMessage}",
-                //    Timestamp = DateTime.UtcNow
-                //};
-
-                //_context.EventLogs.Add(eventLog);
-
-                // counter 
-               // events++;
-            //}
-
             //Parse stats
 
             //find or create a new ERStats object
@@ -100,7 +83,7 @@ namespace MaidenServer.Controllers
                 };
                 _context.ERStats.Add(existingStats);
             }
-
+            bool Event = false;
             foreach (var line in lines)
             {
                 if (line.StartsWith("HP:")) existingStats.HP = ParseInt(line);
@@ -119,6 +102,33 @@ namespace MaidenServer.Controllers
                     existingStats.PrimaryWeapon = weapons.ElementAtOrDefault(0)?.Trim();
                     existingStats.SecondaryWeapon = weapons.ElementAtOrDefault(1)?.Replace("Secondary:", "").Trim();
                     existingStats.TertiaryWeapon = weapons.ElementAtOrDefault(2)?.Replace("Tertiary:", "").Trim();
+                } 
+                else if (line.StartsWith("Event detected:"))
+                {
+                    Event = true;
+                    string eventMessage = ParseString(line);
+                    if (existingStats.EventList == null)
+                    {
+                        existingStats.EventList = new List<string>();
+                    }
+                    if (!String.IsNullOrEmpty(eventMessage))
+                    {
+                        existingStats.EventList.Add(eventMessage);
+                        existingStats.Events = (existingStats.Events ?? 0) + 1;
+                    }
+                }
+                else if (Event)
+                {
+                    string eventMessage = line.Trim();
+                    if (existingStats.EventList == null)
+                    {
+                        existingStats.EventList = new List<string>();
+                    }
+                    if (!String.IsNullOrEmpty(eventMessage))
+                    {
+                      existingStats.EventList.Add(eventMessage);
+                      existingStats.Events = (existingStats.Events ?? 0) + 1;
+                    }
                 }
             }
             existingStats.ResposneCount = (existingStats.ResposneCount ?? 0) + 1;

@@ -17,6 +17,8 @@
         public string? SecondaryWeapon { get; set; }
         public string? TertiaryWeapon { get; set; }
         public int? ResposneCount { get; set; }
+        public int? Events { get; set; }
+        public List<string>? EventList { get; set; }
         public DateTime? CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
     }
