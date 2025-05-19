@@ -1,6 +1,6 @@
 # OpenAI Proxy Server
 
-A lightweight ASP.NET Core Web API designed to securely handle and forward requests to the OpenAI API. Acts as a proxy between your front-end application and OpenAI, keeping your API key hidden from the client side.
+An ASP.NET Core Web API designed to securely handle and forward requests to the OpenAI API and track users stats. Acts as a proxy between my front-end application and OpenAI, keeping my API key hidden from the client side. Logs and updated games stats as users use my [Elden Encourgament app](https://github.com/mmahoney09110/EldenRingEncouragement)
 
 ---
 
@@ -9,13 +9,14 @@ A lightweight ASP.NET Core Web API designed to securely handle and forward reque
 - Secure API key protection  
 - Request forwarding for OpenAI endpoints (chat/response)  
 - Lightweight and high-performance  
-- Easy integration with C#, Unity, WPF, or other .NET clients  
+- Logs and tracks games stats
+- Viewable in a frinedly UI
 
 ---
 
 ## Why This Exists
 
-Embedding your OpenAI API key in a client-side application (like a game overlay) poses a security risk. This proxy server lets your client send requests without ever exposing your key.
+Embedding my OpenAI API key in my client-side application (a game overlay) poses a security risk. This proxy server lets my client send requests without ever exposing my key. I also wanted to be able to view and allow others to view users stats.
 
 ---
 
@@ -84,7 +85,8 @@ This application can be deployed to any .NET-compatible hosting environment:
 - Azure App Service  
 - Railway  
 - Docker (self-hosted or any container platform)  
-- VPS or dedicated server  
+- VPS or dedicated server
+- Render (what I use)
 
 ---
 
