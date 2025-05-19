@@ -1,6 +1,6 @@
 # OpenAI Proxy Server
 
-An ASP.NET Core Web API designed to securely handle and forward requests to the OpenAI API and track users stats. Acts as a proxy between my front-end application and OpenAI, keeping my API key hidden from the client side. Logs and updated games stats as users use my [Elden Encourgament app](https://github.com/mmahoney09110/EldenRingEncouragement)
+An ASP.NET Core Web API designed to securely handle and forward requests to the OpenAI API and track users stats. Acts as a proxy between my front-end application and OpenAI, keeping my API key hidden from the client side. Logs and updates games stats as users use my [Elden Encourgament app](https://github.com/mmahoney09110/EldenRingEncouragement)
 
 ---
 
