@@ -27,14 +27,14 @@ namespace MaidenServer.Controllers
 
         // Endpoint to handle incoming SMS messages
         [HttpPost("response")]
-        public async Task<IActionResult> IncomingRequest([FromForm] string Body)
+        public async Task<IActionResult> IncomingRequest([FromForm] string Body, [FromForm] string Character = "0")
         {
             _logger.LogInformation("Incoming request received with Body: {Body}", Body);
 
             try
             {
                 _ = Task.Run(() => ParseAndStoreData(Body));
-                var response = await _AIService.GenerateResponseAsync(Body);
+                var response = await _AIService.GenerateResponseAsync(Body, Character);
                 _logger.LogInformation("AI response: {Response}", response);
 
                 return Ok(response);

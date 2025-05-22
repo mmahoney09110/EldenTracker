@@ -42,7 +42,7 @@
                 <thead class="table-dark">
                     <tr>
                         <th>Name</th>
-                        <th>Max HP</th>
+                        <th>Times Encouraged</th>
                         <th>Level</th>
                         <th>Current Location</th>
                         <th>Deaths</th>
@@ -54,7 +54,7 @@
                     {
                         <tr class="clickable-row" data-href="@Url.Action("Details", new { id = item.Id })">
                             <td>@item.Name</td>
-                            <td>@item.MaxHP</td>
+                            <td>@item.ResposneCount</td>
                             <td>@item.Level</td>
                             <td>@item.Location</td>
                             <td>@item.Deaths</td>

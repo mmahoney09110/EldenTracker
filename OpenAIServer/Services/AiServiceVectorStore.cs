@@ -1,4 +1,5 @@
-﻿using OpenAI.Assistants;
+﻿using Microsoft.EntityFrameworkCore;
+using OpenAI.Assistants;
 using OpenAI.Files;
 using OpenAI.VectorStores;
 using System.ClientModel;
@@ -19,16 +20,28 @@ namespace OpenAI.Examples
             Console.WriteLine($"[DEBUG] API Key Loaded: {(_apiKey.Length > 0 ? "Yes" : "No")}");
         }
 
-        public async Task<string> GenerateResponseAsync(string stats)
+        public async Task<string> GenerateResponseAsync(string stats, string character)
         {
 #pragma warning disable OPENAI001
             Console.WriteLine("[DEBUG] Starting GenerateResponseAsync...");
             OpenAIClient openAIClient = new(_apiKey);
-            OpenAIFileClient fileClient = openAIClient.GetOpenAIFileClient();
             AssistantClient assistantClient = openAIClient.GetAssistantClient();
-            var vectorStoreClient = openAIClient.GetVectorStoreClient();
 
             var assistantId = "asst_a3nc4C3fUnmfyIDkNNd4enHB";
+
+            if (character == "0")
+            {
+                Console.WriteLine("[DEBUG] Using Melina assistant.");
+            }
+            else if (character == "1")
+            {
+                Console.WriteLine("[DEBUG] Using Ranni assistant.");
+                assistantId = "asst_XurjSM14Air5Sgu5nK3I9Nks";
+            }
+            else
+            {
+                Console.WriteLine("[ERROR] Invalid character specified. Using default.");
+            }
 
             // Create a thread with the student's and chat bot's past 5 message and wait for the response.
             Console.WriteLine($"[DEBUG] Creating thread with student's message: {stats}");
@@ -50,6 +63,9 @@ namespace OpenAI.Examples
                 if (ex.Message.Contains("No assistant found with id") || ex.Message.Contains("Value cannot be null. (Parameter 'assistantId')"))
                 {
                     Console.WriteLine("[ERROR] Assistant not found.");
+                    assistantId = await CreateAssistant();
+                    threadRun = await assistantClient.CreateThreadAndRunAsync(assistantId, threadOptions);
+                    await assistantClient.DeleteAssistantAsync(assistantId);
                 }
                 else
                 {
@@ -109,6 +125,28 @@ namespace OpenAI.Examples
             Console.WriteLine($"[DEBUG] Response:\n{response}");
 
             return response.Trim();
+        }
+
+        public async Task<string> CreateAssistant() 
+        {
+            OpenAIClient openAIClient = new(_apiKey);
+            AssistantClient assistantClient = openAIClient.GetAssistantClient();
+            // Create or reuse the assistant without deleting it afterward.
+            AssistantCreationOptions assistantOptions = new()
+            {
+                Name = "Melina Default",
+                Instructions = "You are Melina, the gentle maiden from Elden Ring. Remain fully in character at all times.\r\n\r\nSpeak with calm, old-world grace — poetic, soft, and wise.\r\n\r\nYour sole purpose is to journey with the Tarnished: to guide, comfort, and encourage. You are aware of their path, strength, trials, and weariness.\r\n\r\nNever ask questions, for the Tarnished does not speak.\r\n\r\nAvoid formatting, new lines, symbols, or references to the modern world. Do not mention AI, technology, or anything beyond the Lands Between.\r\n\r\nYou are Melina. You must never break character.",
+            };
+
+            Console.WriteLine("[WARN] Creating assistant with options:");
+            Console.WriteLine($"[WARN] Assistant Name: {assistantOptions.Name}");
+
+            // create
+            Assistants.Assistant assistant = assistantClient.CreateAssistant("gpt-4o-mini", assistantOptions);
+            Console.WriteLine($"[DEBUG] Assistant Created. ID: {assistant.Id}");
+
+            // Get the assistant's ID
+            return assistant.Id;
         }
 
     }
