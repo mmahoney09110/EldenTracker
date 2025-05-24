@@ -38,6 +38,11 @@ namespace OpenAI.Examples
                 Console.WriteLine("[DEBUG] Using Ranni assistant.");
                 assistantId = "asst_XurjSM14Air5Sgu5nK3I9Nks";
             }
+            else if (character == "2")
+            {
+                Console.WriteLine("[DEBUG] Using Blaidd assistant.");
+                assistantId = "asst_bY11pnl0fpZVL4YdpXw0p4jU";
+            }
             else
             {
                 Console.WriteLine("[ERROR] Invalid character specified. Using default.");
