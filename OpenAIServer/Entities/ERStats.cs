@@ -16,6 +16,7 @@
         public string? PrimaryWeapon { get; set; }
         public string? SecondaryWeapon { get; set; }
         public string? TertiaryWeapon { get; set; }
+        public string? LastEnemyFought { get; set; }
         public int? ResposneCount { get; set; }
         public int? Events { get; set; }
         public List<string>? EventList { get; set; }

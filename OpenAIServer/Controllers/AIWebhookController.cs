@@ -96,13 +96,9 @@ namespace MaidenServer.Controllers
                 else if (line.StartsWith("Class:")) existingStats.Class = ParseString(line);
                 else if (line.StartsWith("Gender:")) existingStats.Gender = ParseString(line);
                 else if (line.StartsWith("Location:")) existingStats.Location = ParseString(line);
-                else if (line.StartsWith("Primary Weapon:"))
-                {
-                    var weapons = line.Replace("Primary Weapon:", "").Split('|');
-                    existingStats.PrimaryWeapon = weapons.ElementAtOrDefault(0)?.Trim();
-                    existingStats.SecondaryWeapon = weapons.ElementAtOrDefault(1)?.Replace("Secondary:", "").Trim();
-                    existingStats.TertiaryWeapon = weapons.ElementAtOrDefault(2)?.Replace("Tertiary:", "").Trim();
-                } 
+                else if (line.StartsWith("Right Weapon:") || line.StartsWith("Primary Weapon:")) existingStats.PrimaryWeapon = ParseString(line.Split("|")[0]);
+                else if (line.StartsWith("Left Weapon:")) existingStats.SecondaryWeapon = ParseString(line);
+                else if (line.StartsWith("Current Enemy:")) existingStats.LastEnemyFought = ParseString(line);
                 else if (line.StartsWith("Event detected:"))
                 {
                     Event = true;
@@ -126,8 +122,8 @@ namespace MaidenServer.Controllers
                     }
                     if (!String.IsNullOrEmpty(eventMessage))
                     {
-                      existingStats.EventList.Add(eventMessage);
-                      existingStats.Events = (existingStats.Events ?? 0) + 1;
+                        existingStats.EventList.Add(eventMessage);
+                        existingStats.Events = (existingStats.Events ?? 0) + 1;
                     }
                 }
             }
