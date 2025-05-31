@@ -5,6 +5,7 @@ using OpenAIServer.Data;
 using System;
 using static OpenAIServer.Data.OpenAIServerContext;
 using Microsoft.Extensions.DependencyInjection;
+using OpenAI;
 
 var _configuration = new ConfigurationBuilder()
     .SetBasePath(AppContext.BaseDirectory)
@@ -20,7 +21,16 @@ builder.Services.AddControllersWithViews();
 
 // 1) Register your services
 builder.Services.AddControllers();
+
+builder.Services.AddSingleton<OpenAIClient>(sp =>
+{
+    var config = sp.GetRequiredService<IConfiguration>();
+    string apiKey = config["OpenAI:APIKey"]!;
+    return new OpenAIClient(apiKey);
+});
+
 builder.Services.AddScoped<AiServiceVectorStore>();
+
 
 // Add IP Rate Limiting
 builder.Services.AddInMemoryRateLimiting();
