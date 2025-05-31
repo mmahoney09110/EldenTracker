@@ -3,6 +3,7 @@ using OpenAI.Assistants;
 using OpenAI.Files;
 using OpenAI.VectorStores;
 using System.ClientModel;
+using System.Net.Http;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -11,10 +12,10 @@ namespace OpenAI.Examples
 {
     public class AiServiceVectorStore
     {
-        private string _apiKey;
-        public AiServiceVectorStore(IConfiguration _config)
+        private readonly HttpClient _httpClient;
+        public AiServiceVectorStore(IHttpClientFactory httpClientFactory)
         {
-            _apiKey = _config["OpenAI:APIKey"]!;
+            _httpClient = httpClientFactory.CreateClient("OpenAI");
         }
 
         private static readonly Dictionary<string, string> CharacterSystemMessages = new()
@@ -123,7 +124,7 @@ namespace OpenAI.Examples
 
             var requestBody = new
             {
-                model = "gpt-4o-mini", // Or gpt-3.5-turbo if you're prioritizing speed
+                model = "gpt-4o-mini", // gpt-3.5-turbo to prioritizing speed and cost, gpt-4o-mini for better quality 
                 messages = new[]
                 {
             new { role = "system", content = systemMessage },
@@ -133,18 +134,17 @@ namespace OpenAI.Examples
                 max_tokens = 1000
             };
 
-            var httpClient = new HttpClient();
-            httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", _apiKey);
-
-            var request = new HttpRequestMessage
+            var request = new HttpRequestMessage(HttpMethod.Post, "v1/chat/completions")
             {
-                Method = HttpMethod.Post,
-                RequestUri = new Uri("https://api.openai.com/v1/chat/completions"),
-                Content = new StringContent(System.Text.Json.JsonSerializer.Serialize(requestBody), Encoding.UTF8, "application/json")
+                Content = new StringContent(
+                System.Text.Json.JsonSerializer.Serialize(requestBody),
+                Encoding.UTF8,
+                "application/json"
+            )
             };
 
             Console.WriteLine("[DEBUG] Sending Chat Completion request...");
-            HttpResponseMessage response = await httpClient.SendAsync(request);
+            HttpResponseMessage response = await _httpClient.SendAsync(request);
             string responseJson = await response.Content.ReadAsStringAsync();
 
             if (!response.IsSuccessStatusCode)

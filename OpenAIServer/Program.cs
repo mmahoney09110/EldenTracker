@@ -6,6 +6,7 @@ using System;
 using static OpenAIServer.Data.OpenAIServerContext;
 using Microsoft.Extensions.DependencyInjection;
 using OpenAI;
+using System.Net.Http.Headers;
 
 var _configuration = new ConfigurationBuilder()
     .SetBasePath(AppContext.BaseDirectory)
@@ -22,26 +23,24 @@ builder.Services.AddControllersWithViews();
 // 1) Register your services
 builder.Services.AddControllers();
 
-builder.Services.AddSingleton<OpenAIClient>(sp =>
+builder.Services.AddHttpClient("OpenAI", client =>
 {
-    var config = sp.GetRequiredService<IConfiguration>();
-    string apiKey = config["OpenAI:APIKey"]!;
-    return new OpenAIClient(apiKey);
+    client.BaseAddress = new Uri("https://api.openai.com/");
+    client.DefaultRequestHeaders.Authorization =
+        new AuthenticationHeaderValue("Bearer", builder.Configuration["OpenAI:APIKey"]);
+    client.Timeout = TimeSpan.FromSeconds(30);
 });
 
 builder.Services.AddScoped<AiServiceVectorStore>();
 
 
 // Add IP Rate Limiting
+// Load configuration
+builder.Services.Configure<IpRateLimitOptions>(builder.Configuration.GetSection("IpRateLimiting"));
+builder.Services.AddMemoryCache();
 builder.Services.AddInMemoryRateLimiting();
 builder.Services.AddSingleton<IRateLimitConfiguration, RateLimitConfiguration>();
-
-// Add the rate limit middleware
 builder.Services.AddOptions();
-builder.Services.AddMemoryCache();
-
-// Add Rate Limiting policies
-builder.Services.Configure<IpRateLimitOptions>(_configuration.GetSection("IpRateLimiting"));
 
 var app = builder.Build();
 
@@ -51,6 +50,9 @@ app.UseHttpsRedirection();
 // 3) Routing must come before MapControllers
 app.UseStaticFiles();
 app.UseRouting();
+
+// Enable IP rate limiting
+app.UseIpRateLimiting();
 
 app.UseEndpoints(endpoints =>
 {
@@ -65,9 +67,6 @@ app.UseEndpoints(endpoints =>
 // 5) Map API controllers
 app.MapControllers();
 
-// 6) (Optional) static pages, razor, etc.
-// Enable IP rate limiting
-app.UseIpRateLimiting();
 
 app.Run();
 
