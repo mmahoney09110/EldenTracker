@@ -113,6 +113,10 @@ namespace MaidenServer.Controllers
                         existingStats.Events = (existingStats.Events ?? 0) + 1;
                     }
                 }
+                else if (line.Contains("They await your insight") || line.StartsWith("Your relationship to the Tarnished is"))
+                { 
+                    continue; 
+                }
                 else if (Event)
                 {
                     string eventMessage = line.Trim();
