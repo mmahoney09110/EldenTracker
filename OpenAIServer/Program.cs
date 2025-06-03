@@ -7,6 +7,7 @@ using static OpenAIServer.Data.OpenAIServerContext;
 using Microsoft.Extensions.DependencyInjection;
 using OpenAI;
 using System.Net.Http.Headers;
+using Microsoft.AspNetCore.HttpOverrides;
 
 var _configuration = new ConfigurationBuilder()
     .SetBasePath(AppContext.BaseDirectory)
@@ -52,6 +53,14 @@ app.UseStaticFiles();
 app.UseRouting();
 
 // Enable IP rate limiting
+app.UseForwardedHeaders(new ForwardedHeadersOptions
+{
+    ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto,
+    ForwardLimit = null, 
+    KnownNetworks = { }, 
+    KnownProxies = { }   
+});
+
 app.UseIpRateLimiting();
 
 app.UseEndpoints(endpoints =>
