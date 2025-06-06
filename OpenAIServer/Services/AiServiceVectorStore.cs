@@ -183,13 +183,24 @@ namespace OpenAI.Examples
             };
 
             Console.WriteLine("[DEBUG] Sending Chat Completion request...");
-            HttpResponseMessage response = await _httpClient.SendAsync(request);
+            HttpResponseMessage response;
+            try
+            {
+                response = await _httpClient.SendAsync(request);
+            }
+            catch (TaskCanceledException ex) when (!ex.CancellationToken.IsCancellationRequested)
+            {
+                // Timeout occurred
+                Console.WriteLine("[WARN] OpenAI request timed out after 30s.");
+                return "I have no comment for now, continue forth, Tarnished."; 
+            }
+
             string responseJson = await response.Content.ReadAsStringAsync();
 
             if (!response.IsSuccessStatusCode)
             {
                 Console.WriteLine($"[ERROR] OpenAI API Error: {response.StatusCode} - {responseJson}");
-                throw new Exception("Failed to get response from OpenAI.");
+                return "I have no comment for now, continue forth, Tarnished."; 
             }
 
             using var doc = System.Text.Json.JsonDocument.Parse(responseJson);
