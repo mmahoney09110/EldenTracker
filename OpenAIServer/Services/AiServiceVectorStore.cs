@@ -169,7 +169,7 @@ namespace OpenAI.Examples
             new { role = "system", content = systemMessage },
             new { role = "user", content = stats }
         },
-                temperature = 0.7,
+                temperature = 0.85,
                 max_tokens = 1000
             };
 
