@@ -33,7 +33,7 @@ builder.Services.AddHttpClient("OpenAI", client =>
 });
 
 builder.Services.AddScoped<AiServiceVectorStore>();
-
+builder.Services.AddScoped<Persona>();
 
 // Add IP Rate Limiting
 // Load configuration
