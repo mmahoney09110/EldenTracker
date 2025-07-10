@@ -112,4 +112,6 @@ This project is licensed under the [MIT License](LICENSE).
 ## Acknowledgments
 
 - Built for the Elden Ring AI Companion Project  
-- Powered by .NET 9 and OpenAI  
+- Powered by .NET 9 and OpenAI
+- All API keys and sensitive configuration values are excluded for security. Please add your own credentials if you run locally.
+- I am aware that this open source code could led to unintended use of by live web service, however, I have an IP rate limit, prepaid API plan, and personally view logs to ensure it cannot be abused.
